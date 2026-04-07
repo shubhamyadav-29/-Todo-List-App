@@ -33,7 +33,7 @@ body {
 .input-row {
   display: flex;
   gap: 8px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
 }
 
 .todo-input {
@@ -66,6 +66,47 @@ body {
   background: #574fd6;
 }
 
+/* ✅ NEW: Filter tabs */
+.filter-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 16px;
+  background: #f0f2f5;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.filter-btn {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  color: #888;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  color: #6c63ff;
+}
+
+.filter-btn.active {
+  background: #ffffff;
+  color: #6c63ff;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+}
+
+/* ✅ NEW: Empty state */
+.empty-msg {
+  text-align: center;
+  color: #bbb;
+  font-size: 14px;
+  padding: 28px 0;
+}
+
 .todo-list {
   list-style: none;
   display: flex;
@@ -84,7 +125,6 @@ body {
   transition: opacity 0.2s;
 }
 
-/* ✅ Completed style */
 .todo-item.completed {
   opacity: 0.5;
 }

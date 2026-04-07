@@ -4,36 +4,43 @@ import './App.css'
 function App() {
   const [todos, setTodos] = useState([])
   const [inputValue, setInputValue] = useState('')
+  // ✅ NEW: track which filter is active
+  const [filter, setFilter] = useState('all') // 'all' | 'active' | 'completed'
 
   function handleAddTodo() {
     if (inputValue.trim() === '') return
-
     const newTodo = {
       id: Date.now(),
       text: inputValue,
       completed: false
     }
-
     setTodos([...todos, newTodo])
     setInputValue('')
   }
 
-  // ✅ NEW: Toggle completed true/false for a specific todo
   function handleToggle(id) {
     setTodos(todos.map((todo) =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     ))
   }
 
-  // ✅ NEW: Remove a todo by filtering it out
   function handleDelete(id) {
     setTodos(todos.filter((todo) => todo.id !== id))
   }
 
-  // ✅ NEW: Add task when user presses Enter key
   function handleKeyDown(e) {
     if (e.key === 'Enter') handleAddTodo()
   }
+
+  // ✅ NEW: derived state — we don't store this in useState
+  // we calculate it from existing state every render
+  const filteredTodos = todos.filter((todo) => {
+    if (filter === 'active') return !todo.completed
+    if (filter === 'completed') return todo.completed
+    return true // 'all'
+  })
+
+  const remainingCount = todos.filter(t => !t.completed).length
 
   return (
     <div className="container">
@@ -53,37 +60,52 @@ function App() {
         </button>
       </div>
 
-      <ul className="todo-list">
-        {todos.map((todo) => (
-          <li key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
+      {/* ✅ NEW: Filter tabs */}
+      <div className="filter-tabs">
+        {['all', 'active', 'completed'].map((tab) => (
+          <button
+            key={tab}
+            className={`filter-btn ${filter === tab ? 'active' : ''}`}
+            onClick={() => setFilter(tab)}
+          >
+            {/* Capitalize first letter */}
+            {tab.charAt(0).toUpperCase() + tab.slice(1)}
+          </button>
+        ))}
+      </div>
 
-            {/* Checkbox to toggle complete */}
+      {/* ✅ NEW: Empty state message */}
+      {filteredTodos.length === 0 && (
+        <p className="empty-msg">
+          {filter === 'completed' ? 'No completed tasks yet.' :
+           filter === 'active' ? 'Nothing left to do! 🎉' :
+           'Add your first task above.'}
+        </p>
+      )}
+
+      <ul className="todo-list">
+        {filteredTodos.map((todo) => (
+          <li key={todo.id} className={`todo-item ${todo.completed ? 'completed' : ''}`}>
             <input
               type="checkbox"
               className="todo-checkbox"
               checked={todo.completed}
               onChange={() => handleToggle(todo.id)}
             />
-
-            {/* Task text */}
             <span className="todo-text">{todo.text}</span>
-
-            {/* Delete button */}
             <button
               className="delete-btn"
               onClick={() => handleDelete(todo.id)}
             >
               ✕
             </button>
-
           </li>
         ))}
       </ul>
 
-      {/* ✅ NEW: Show count of remaining tasks */}
       {todos.length > 0 && (
         <p className="todo-count">
-          {todos.filter(t => !t.completed).length} task(s) remaining
+          {remainingCount} task(s) remaining
         </p>
       )}
     </div>
