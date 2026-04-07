@@ -1,10 +1,17 @@
-function Header({ remaining }) {
+function Header({ remaining, completedCount, onClearCompleted }) {
   return (
     <div className="header">
       <h1 className="title">My Todos</h1>
-      {remaining > 0 && (
-        <span className="remaining-badge">{remaining} left</span>
-      )}
+      <div className="header-actions">
+        {remaining > 0 && (
+          <span className="remaining-badge">{remaining} left</span>
+        )}
+        {completedCount > 0 && (
+          <button className="clear-btn" onClick={onClearCompleted}>
+            Clear done
+          </button>
+        )}
+      </div>
     </div>
   )
 }

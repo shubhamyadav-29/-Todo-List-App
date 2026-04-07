@@ -1,6 +1,6 @@
 import TodoItem from './TodoItem'
 
-function TodoList({ todos, filter, onToggle, onDelete }) {
+function TodoList({ todos, filter, onToggle, onDelete, onEdit }) {
 
   const filteredTodos = todos.filter((todo) => {
     if (filter === 'active') return !todo.completed
@@ -26,6 +26,7 @@ function TodoList({ todos, filter, onToggle, onDelete }) {
           todo={todo}
           onToggle={onToggle}
           onDelete={onDelete}
+          onEdit={onEdit}
         />
       ))}
     </ul>

@@ -23,17 +23,59 @@ body {
   box-shadow: 0 4px 24px rgba(0,0,0,0.08);
 }
 
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
 .title {
   font-size: 24px;
   font-weight: 600;
   color: #1a1a2e;
-  margin-bottom: 20px;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.remaining-badge {
+  background: #6c63ff;
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.clear-btn {
+  background: none;
+  border: 1px solid #ffcccc;
+  color: #ff4d4d;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.clear-btn:hover {
+  background: #fff0f0;
+}
+
+/* Input */
+.input-wrapper {
+  margin-bottom: 16px;
 }
 
 .input-row {
   display: flex;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 8px;
 }
 
 .todo-input {
@@ -48,6 +90,17 @@ body {
 
 .todo-input:focus {
   border-color: #6c63ff;
+}
+
+.todo-input.input-error {
+  border-color: #ff4d4d;
+}
+
+.error-msg {
+  color: #ff4d4d;
+  font-size: 12px;
+  margin-top: 4px;
+  padding-left: 4px;
 }
 
 .add-btn {
@@ -66,7 +119,31 @@ body {
   background: #574fd6;
 }
 
-/* ✅ NEW: Filter tabs */
+/* Priority + date row */
+.meta-row {
+  display: flex;
+  gap: 8px;
+}
+
+.priority-select,
+.date-input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 13px;
+  outline: none;
+  background: white;
+  color: #333;
+  transition: border-color 0.2s;
+}
+
+.priority-select:focus,
+.date-input:focus {
+  border-color: #6c63ff;
+}
+
+/* Filter tabs */
 .filter-tabs {
   display: flex;
   gap: 6px;
@@ -89,9 +166,7 @@ body {
   transition: all 0.2s;
 }
 
-.filter-btn:hover {
-  color: #6c63ff;
-}
+.filter-btn:hover { color: #6c63ff; }
 
 .filter-btn.active {
   background: #ffffff;
@@ -99,7 +174,7 @@ body {
   box-shadow: 0 1px 6px rgba(0,0,0,0.08);
 }
 
-/* ✅ NEW: Empty state */
+/* Empty state */
 .empty-msg {
   text-align: center;
   color: #bbb;
@@ -107,6 +182,7 @@ body {
   padding: 28px 0;
 }
 
+/* Todo list */
 .todo-list {
   list-style: none;
   display: flex;
@@ -123,16 +199,29 @@ body {
   border-radius: 10px;
   padding: 14px 16px;
   transition: opacity 0.2s;
+  position: relative;
+  overflow: hidden;
 }
 
-.todo-item.completed {
-  opacity: 0.5;
-}
-
+.todo-item.completed { opacity: 0.5; }
 .todo-item.completed .todo-text {
   text-decoration: line-through;
   color: #999;
 }
+
+/* Priority bar */
+.priority-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 10px 0 0 10px;
+}
+
+.priority-high   { background: #ff4d4d; }
+.priority-medium { background: #ffaa00; }
+.priority-low    { background: #4caf50; }
 
 .todo-checkbox {
   width: 18px;
@@ -142,11 +231,55 @@ body {
   flex-shrink: 0;
 }
 
-.todo-text {
+.todo-content {
   flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.todo-text {
   font-size: 15px;
   color: #333;
   word-break: break-word;
+  cursor: pointer;
+}
+
+.edit-input {
+  width: 100%;
+  padding: 4px 8px;
+  border: 1.5px solid #6c63ff;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+}
+
+.due-date {
+  font-size: 11px;
+  color: #aaa;
+}
+
+.due-date.overdue {
+  color: #ff4d4d;
+  font-weight: 500;
+}
+
+.edit-btn {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.edit-btn:hover {
+  color: #6c63ff;
+  background: #f0eeff;
 }
 
 .delete-btn {
@@ -166,24 +299,18 @@ body {
   background: #fff0f0;
 }
 
-.todo-count {
-  margin-top: 16px;
-  font-size: 13px;
-  color: #999;
-  text-align: right;
-}
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
-}
+/* Mobile responsive */
+@media (max-width: 480px) {
+  body { padding: 0; }
 
-.remaining-badge {
-  background: #6c63ff;
-  color: white;
-  font-size: 12px;
-  font-weight: 500;
-  padding: 4px 10px;
-  border-radius: 20px;
+  .container {
+    border-radius: 0;
+    min-height: 100vh;
+    padding: 20px 16px;
+    box-shadow: none;
+  }
+
+  .meta-row {
+    flex-direction: column;
+  }
 }
